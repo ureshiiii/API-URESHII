@@ -4,7 +4,7 @@ const app = express();
 
 app.use(express.json());
 
-const allowedOrigins = ["https://www.ureshii.my.id", "https://ureshii.my.id"];
+const allowedOrigins = ["https://www.ureshii.my.id", "https://ureshii.my.id", "https://api-ureshii.vercel.app"];
 app.use((req, res, next) => {
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
