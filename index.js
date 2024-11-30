@@ -2,14 +2,9 @@ const express = require('express');
 const mysql = require('mysql2/promise');
 const app = express();
 
-// Middleware untuk JSON
 app.use(express.json());
 
-// Validasi CORS
-const allowedOrigins = [
-  "https://www.ureshii.my.id",
-  "https://ureshii.my.id"
-];
+const allowedOrigins = ["https://www.ureshii.my.id", "https://ureshii.my.id"];
 app.use((req, res, next) => {
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
@@ -19,7 +14,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Validasi API Key
 const API_KEY = process.env.API_KEY || "kunciApiAnda";
 app.use((req, res, next) => {
   const key = req.query.key;
@@ -29,7 +23,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Koneksi Database
 const dbConfig = {
   host: process.env.DB_HOST || "localhost",
   user: process.env.DB_USER || "root",
@@ -44,12 +37,10 @@ async function queryDatabase(sql, params = []) {
   return results;
 }
 
-// Endpoint Utama
 app.get('/', async (req, res) => {
   const type = req.query.type || null;
 
   if (!type) {
-    // Menampilkan daftar data yang tersedia
     res.json({
       Info: "Databasenya aktif hann :3",
       Kominfo: "Hacker jangan menyerang",
@@ -70,21 +61,17 @@ app.get('/', async (req, res) => {
         case 'donorData':
           response.donorData = await queryDatabase("SELECT * FROM donorData");
           break;
-
         case 'dataAkun':
           response.dataAkun = await queryDatabase("SELECT Id, Age, Username, role FROM users");
           break;
-
         case 'totalSurvey':
           const [totalSurvey] = await queryDatabase("SELECT COUNT(id) AS totalsurvey FROM responses");
           response.totalSurvey = totalSurvey.totalsurvey;
           break;
-
         case 'totalAkun':
           const [totalAkun] = await queryDatabase("SELECT COUNT(Id) AS totalakun FROM users");
           response.totalAkun = totalAkun.totalakun;
           break;
-
         case 'dataProduk':
           const dataProduk = await queryDatabase(`
             SELECT p.id_produk, p.nama_produk, p.harga, p.icon, l.nama_layanan
@@ -97,23 +84,19 @@ app.get('/', async (req, res) => {
             harga: Number(item.harga).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }),
           }));
           break;
-
         case 'dataButtons':
           response.dataButtons = await queryDatabase("SELECT * FROM buttons");
           break;
-
         default:
           return res.status(400).json({ Error: "Error: pastikan parameter 'type' tersedia di list!" });
       }
 
       res.json(response);
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ Error: "Terjadi kesalahan server" });
+      res.status(500).json({ Error: "Terjadi kesalahan server", Detail: err.message });
     }
   }
 });
 
-// Export untuk Vercel
 module.exports = app;
-  
+            
