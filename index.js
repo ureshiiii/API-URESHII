@@ -24,10 +24,10 @@ app.use((req, res, next) => {
 });
 
 const dbConfig = {
-  host: process.env.DB_HOST || "sql305.infinityfree.com",
-  user: process.env.DB_USER || "if0_36039712",
-  password: process.env.DB_PASS || "Qo1E1XszIq",
-  database: process.env.DB_NAME || "if0_36039712_handata",
+  host: process.env.DB_HOST || "sql12.freemysqlhosting.net",
+  user: process.env.DB_USER || "sql12748811",
+  password: process.env.DB_PASS || "Yy4ZX9LqDI",
+  database: process.env.DB_NAME || "sql12748811",
 };
 
 async function queryDatabase(sql, params = []) {
