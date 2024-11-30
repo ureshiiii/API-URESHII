@@ -14,7 +14,7 @@ app.use((req, res, next) => {
   next();
 });
 
-const API_KEY = process.env.API_KEY || "kunciApiAnda";
+const API_KEY = process.env.API_KEY || "lovefirsha";
 app.use((req, res, next) => {
   const key = req.query.key;
   if (!key || key !== API_KEY) {
@@ -24,10 +24,10 @@ app.use((req, res, next) => {
 });
 
 const dbConfig = {
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASS || "",
-  database: process.env.DB_NAME || "database_name",
+  host: process.env.DB_HOST || "sql305.infinityfree.com",
+  user: process.env.DB_USER || "if0_36039712",
+  password: process.env.DB_PASS || "Qo1E1XszIq",
+  database: process.env.DB_NAME || "if0_36039712_handata",
 };
 
 async function queryDatabase(sql, params = []) {
