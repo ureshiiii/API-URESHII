@@ -1,118 +1,119 @@
 const express = require('express');
-const cors = require('cors');
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// Koneksi ke database MySQL menggunakan environment variables
-const db = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME
-});
+// Middleware untuk JSON
+app.use(express.json());
 
-// Cek koneksi
-db.connect((err) => {
-  if (err) {
-    console.error('Koneksi ke database gagal:', err);
-    return;
-  }
-  console.log('Koneksi ke database berhasil!');
-});
-
-// Middleware CORS, menggunakan environment variable untuk allowed origins
-const allowedOrigins = [process.env.ALLOWED_ORIGIN_1, process.env.ALLOWED_ORIGIN_2];
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  }
-}));
-
-// API key (kunci API) juga dipindahkan ke environment variables
-const kunciApi = process.env.API_KEY || 'lovefirsha';  // Default jika tidak ada env var
-
-// Middleware untuk validasi API key
+// Validasi CORS
+const allowedOrigins = [
+  "https://www.ureshii.my.id",
+  "https://ureshii.my.id"
+];
 app.use((req, res, next) => {
-  const apiKey = req.query.key;
-  if (!apiKey || apiKey !== kunciApi) {
-    return res.status(403).json({ Error: 'Apikeynya mana bang?!' });
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'GET');
+  next();
+});
+
+// Validasi API Key
+const API_KEY = process.env.API_KEY || "kunciApiAnda";
+app.use((req, res, next) => {
+  const key = req.query.key;
+  if (!key || key !== API_KEY) {
+    return res.status(403).json({ Error: "Apikeynya mana bang?!" });
   }
   next();
 });
 
-// Fungsi untuk menangani GET request
-app.get('/', (req, res) => {
-  const type = req.query.type;
+// Koneksi Database
+const dbConfig = {
+  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASS || "",
+  database: process.env.DB_NAME || "database_name",
+};
+
+async function queryDatabase(sql, params = []) {
+  const connection = await mysql.createConnection(dbConfig);
+  const [results] = await connection.execute(sql, params);
+  await connection.end();
+  return results;
+}
+
+// Endpoint Utama
+app.get('/', async (req, res) => {
+  const type = req.query.type || null;
 
   if (!type) {
     // Menampilkan daftar data yang tersedia
-    const availableDataTypes = ['donorData', 'dataAkun', 'totalSurvey', 'totalAkun', 'imgTesti'];
     res.json({
-      Info: 'Databasenya aktif hann :3',
-      Kominfo: 'Hacker jangan menyerang',
-      DataYangTersedia: availableDataTypes
+      Info: "Databasenya aktif hann :3",
+      Kominfo: "Hacker jangan menyerang",
+      DataYangTersedia: [
+        "donorData",
+        "dataAkun",
+        "totalSurvey",
+        "totalAkun",
+        "dataProduk",
+        "dataButtons"
+      ]
     });
   } else {
-    // Routing untuk berbagai tipe data
-    switch (type) {
-      case 'donorData':
-        db.query('SELECT * FROM donorData', (err, results) => {
-          if (err) {
-            return res.status(500).json({ Error: 'Gagal mengambil data donor' });
-          }
-          res.json({ donorData: results });
-        });
-        break;
+    try {
+      let response = { Info: "Databasenya aktif hann :3", Kominfo: "Hacker jangan menyerang" };
 
-      case 'dataAkun':
-        db.query('SELECT Id, Age, Username, role FROM users', (err, results) => {
-          if (err) {
-            return res.status(500).json({ Error: 'Gagal mengambil data akun' });
-          }
-          res.json({ dataAkun: results });
-        });
-        break;
+      switch (type) {
+        case 'donorData':
+          response.donorData = await queryDatabase("SELECT * FROM donorData");
+          break;
 
-      case 'totalSurvey':
-        db.query('SELECT COUNT(id) AS totalsurvey FROM responses', (err, results) => {
-          if (err) {
-            return res.status(500).json({ Error: 'Gagal menghitung survei' });
-          }
-          res.json({ totalSurvey: results[0].totalsurvey });
-        });
-        break;
+        case 'dataAkun':
+          response.dataAkun = await queryDatabase("SELECT Id, Age, Username, role FROM users");
+          break;
 
-      case 'totalAkun':
-        db.query('SELECT COUNT(Id) AS totalakun FROM users', (err, results) => {
-          if (err) {
-            return res.status(500).json({ Error: 'Gagal menghitung akun' });
-          }
-          res.json({ totalAkun: results[0].totalakun });
-        });
-        break;
+        case 'totalSurvey':
+          const [totalSurvey] = await queryDatabase("SELECT COUNT(id) AS totalsurvey FROM responses");
+          response.totalSurvey = totalSurvey.totalsurvey;
+          break;
 
-      case 'imgTesti':
-        const imgTesti = [
-          { url: 'https://example.com/image1.jpg', bulan: 'January', tahun: '2024', tanggal: 1 },
-          { url: 'https://example.com/image2.jpg', bulan: 'February', tahun: '2024', tanggal: 5 }
-        ];
-        res.json({ imgTesti });
-        break;
+        case 'totalAkun':
+          const [totalAkun] = await queryDatabase("SELECT COUNT(Id) AS totalakun FROM users");
+          response.totalAkun = totalAkun.totalakun;
+          break;
 
-      default:
-        res.status(400).json({ Error: "Invalid, parameter 'type' gada" });
-        break;
+        case 'dataProduk':
+          const dataProduk = await queryDatabase(`
+            SELECT p.id_produk, p.nama_produk, p.harga, p.icon, l.nama_layanan
+            FROM produk p
+            INNER JOIN layanan l ON p.id_layanan = l.id_layanan
+            ORDER BY p.id_produk ASC
+          `);
+          response.dataProduk = dataProduk.map(item => ({
+            ...item,
+            harga: Number(item.harga).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' }),
+          }));
+          break;
+
+        case 'dataButtons':
+          response.dataButtons = await queryDatabase("SELECT * FROM buttons");
+          break;
+
+        default:
+          return res.status(400).json({ Error: "Error: pastikan parameter 'type' tersedia di list!" });
+      }
+
+      res.json(response);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ Error: "Terjadi kesalahan server" });
     }
   }
-
 });
 
-// Jalankan server
-app.listen(PORT, () => {
-  console.log(`Server berjalan di http://localhost:${PORT}`);
-});
+// Export untuk Vercel
+module.exports = app;
+  
