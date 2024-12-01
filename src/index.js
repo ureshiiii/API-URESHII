@@ -7,13 +7,14 @@ const swaggerDocument = require('../swagger.json');
 const app = express();
 app.use(express.json());
 
-// Validasi cors biar ga gampang di jebol
+// Validasi CORS
 app.use((req, res, next) => {
   const origin = req.headers.origin;
   if (config.allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
-  res.setHeader('Access-Control-Allow-Methods', 'GET');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 });
 
@@ -25,15 +26,11 @@ app.use('/api/data', (req, res, next) => {
   }
   next();
 });
-
-// All url route biar mantap
+// Route API
 app.use('/api', apiRoutes);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
-  swaggerOptions: {
-    url: 'https://api-ureshii.vercel.app/swagger.json'
-  }
-}));
-app.use('/api-docs', (req, res, next) => {
+// Swagger UI
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/docs', (req, res, next) => {
   res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   res.set('Pragma', 'no-cache');
   res.set('Expires', '0');
