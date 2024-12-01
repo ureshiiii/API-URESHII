@@ -58,9 +58,12 @@ app.use('/docs',
         align-items: center; 
         display: flex; 
         flex-wrap: wrap; 
-        gap: 0 10px; 
+        gap: 0 10px;
         padding: 0 10px; 
         width: 100%; 
+      }
+      .swagger-ui .opblock-summary .copy-to-clipboard { 
+        display: none; 
       }
       `,
     customCssUrl: CSS_URL,
