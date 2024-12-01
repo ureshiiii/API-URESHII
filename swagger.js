@@ -53,12 +53,44 @@ const swaggerConfig = {
       "Tanya Gemini dari Google tentang apapun!",
       [
         createParameter("text", true, "Text / Pertanyaan", "string", "Tulis sebuah puisi tentang keindahan alam"),
-        createParameter("logic", false, "Sifat / Logika / Prompt [ Opsional ]", "string", "Gunakan gaya bahasa puitis"),
-        createParameter("model", false, "Model Gemini AI [ Opsional ]", "string"),
+        createParameter("logic", false, "Sifat / Prompt - Opsional", "string", "Gunakan gaya bahasa puitis"),
+        createParameter("model", false, "Model Gemini AI - Opsional", "string"),
       ],
       {
         ...createResponse(200, "Successful response"),
         ...createResponse(400, "Missing text parameter"),
+        ...createResponse(500, "Server error"),
+      }
+    ),
+    "/api/ai/blackbox": createPath(
+      "get",
+      ["AI"],
+      "Blackbox AI",
+      "Tanya blackbox tentang apapun!",
+      [
+        createParameter("text", true, "Text / Pertanyaan", "string", "Tulis sebuah puisi tentang keindahan alam"),
+        createParameter("logic", false, "Sifat / Prompt - Opsional", "string", "Gunakan gaya bahasa puitis"),
+        createParameter("model", false, "Model Blackbox AI - Opsional", "string"),
+      ],
+      {
+        ...createResponse(200, "Successful response"),
+        ...createResponse(400, "Missing text parameter"),
+        ...createResponse(500, "Server error"),
+      }
+    ),
+    "/api/data": createPath(
+      "get",
+      ["Owner"],
+      "Get Data",
+      "Get data dari database",
+      [
+        createParameter("key", true, "API Key", "string", ""),
+        createParameter("type", true, "Type data", "string", "dataProduk"),
+      ],
+      {
+        ...createResponse(200, "Successful response"),
+        ...createResponse(400, "Type does not exist"),
+        ...createResponse(403, "Wrong API Key"),
         ...createResponse(500, "Server error"),
       }
     ),
