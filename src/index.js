@@ -2,7 +2,7 @@ const express = require('express');
 const apiRoutes = require('./route/api');
 const config = require('./config');
 const swaggerUi = require('swagger-ui-express');
-const swaggerDoc = require('../swagger.json');
+const swaggerDoc = require('../swagger');
 const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.0.0/swagger-ui.min.css"; 
 const app = express();
 
