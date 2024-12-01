@@ -5,6 +5,7 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerDoc = require('../swagger.json');
 const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.0.0/swagger-ui.min.css"; 
 const app = express();
+
 app.use(express.json());
 
 // Validasi CORS
@@ -26,6 +27,7 @@ app.use('/api/data', (req, res, next) => {
   }
   next();
 });
+
 // Route API
 app.use('/api', apiRoutes);
 // Swagger UI
@@ -34,10 +36,28 @@ app.use(
   swaggerUi.serve,
   swaggerUi.setup(swaggerDoc, {
     swaggerOptions: {
-      url: 'https://api-ureshii.vercel.app/swagger.json'
+      url: 'https://api-ureshii.vercel.app/swagger.json' 
     },
-    customCss:
-      '.swagger-ui .opblock .opblock-summary-path-description-wrapper { align-items: center; display: flex; flex-wrap: wrap; gap: 0 10px; padding: 0 10px; width: 100%; }',
+    customCss: 
+      `.swagger-ui .topbar { 
+        display: none; 
+      }
+      .swagger-ui .opblock .opblock-summary-path-description-wrapper { 
+        align-items: center; 
+        display: flex; 
+        flex-wrap: wrap; 
+        gap: 0 10px; 
+        padding: 0 10px; 
+        width: 100%; 
+      }
+      @media (max-width: 768px) {
+        .swagger-ui .opblock-summary {
+          flex-direction: column; 
+        }
+        .swagger-ui .opblock-summary-method {
+          margin-bottom: 10px;
+        }
+      }`,
     customCssUrl: CSS_URL,
   }),
 );
