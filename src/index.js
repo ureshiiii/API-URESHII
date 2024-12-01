@@ -2,9 +2,7 @@ const express = require('express');
 const apiRoutes = require('./route/api');
 const config = require('./config');
 const swaggerUi = require('swagger-ui-express');
-const fs = require('fs');
-const path = require('path');
-
+const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.0.0/swagger-ui.min.css"; 
 const app = express();
 app.use(express.json());
 
@@ -30,7 +28,17 @@ app.use('/api/data', (req, res, next) => {
 // Route API
 app.use('/api', apiRoutes);
 // Swagger UI
-app.use('/docs', express.static('node_modules/swagger-ui-dist'), swaggerUi.serve, swaggerUi.setup(swaggerDocument, options)
+app.use(
+  '/docs',
+  swaggerUi.serve,
+  swaggerUi.setup(undefined, {
+    swaggerOptions: {
+      url: 'https://api-ureshii.vercel.app/swagger.json'
+    },
+    customCss:
+      '.swagger-ui .opblock .opblock-summary-path-description-wrapper { align-items: center; display: flex; flex-wrap: wrap; gap: 0 10px; padding: 0 10px; width: 100%; }',
+    customCssUrl: CSS_URL,
+  }),
 );
 
 const PORT = process.env.PORT || 3000;
