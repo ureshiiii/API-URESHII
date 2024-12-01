@@ -16,7 +16,7 @@ const createSuccessResponse = (data, modelUsed, logicUsed) => ({
 async function blackbox(text, logic, model) {
   try {
     const prompt = `${logic ? `${logic}\n` : ''}${text}`;
-    const url = 'https://www.blackbox.ai/api/chat';
+    const url = 'https://api.blackbox.ai/api/chat';
     const data = {
       "messages": [{ "role": "user", "content": prompt, "id": "QgaYVnl" }],
       "id": "ugrC6k4",
@@ -51,7 +51,7 @@ async function blackbox(text, logic, model) {
   }
 }
 
-async function processGemini(text, logic, model) {
+async function gemini(text, logic, model) {
   try {
     const Used_Apikey = process.env.GOOGLE_API_KEY;
     const genAI = new GoogleGenerativeAI(Used_Apikey);
@@ -74,5 +74,5 @@ async function processGemini(text, logic, model) {
 
 module.exports = {
   blackbox,
-  processGemini,
+  gemini,
 };
