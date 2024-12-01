@@ -30,11 +30,12 @@ app.use('/api/data', (req, res, next) => {
 
 // Route API
 app.use('/api', apiRoutes);
-// Swagger UI
+// Halaman dokumentasi
 app.use(
   '/docs',
   swaggerUi.serve,
   swaggerUi.setup(swaggerDoc, {
+    layout: "StandaloneLayout",
     swaggerOptions: {
       url: 'https://api-ureshii.vercel.app/swagger.json' 
     },
@@ -50,17 +51,20 @@ app.use(
         padding: 0 10px; 
         width: 100%; 
       }
-      @media (max-width: 768px) {
-        .swagger-ui .opblock-summary {
-          flex-direction: column; 
-        }
-        .swagger-ui .opblock-summary-method {
-          margin-bottom: 10px;
-        }
-      }`,
+      `,
     customCssUrl: CSS_URL,
   }),
 );
+app.use('/docs', (req, res, next) => {
+  const originalSend = res.send;
+  res.send = function (body) {
+    if (typeof body === 'string' && body.includes('<head>')) {
+      body = body.replace('<head>', `<head><meta name="viewport" content="width=device-width, initial-scale=1">`);
+    }
+    originalSend.call(this, body);
+  };
+  next();
+}); 
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
