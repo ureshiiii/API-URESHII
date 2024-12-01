@@ -4,7 +4,7 @@ const apiRoutes = require('./route/api');
 const config = require('./config');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
 const app = express();
 app.use(express.json());
