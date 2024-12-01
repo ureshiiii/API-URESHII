@@ -1,0 +1,28 @@
+const config = require('../config');
+const aiFunctions = require('./fungsi-ai');
+
+exports.process = async (req, res) => {
+  try {
+    const engine = req.params.engine;
+    const { text, logic } = req.query;
+
+    if (!text || typeof text !== 'string' || text.trim() === '') {
+      return res.status(400).json({ error: "Parameter 'text' harus berupa string dan tidak boleh kosong." });
+    }
+
+    const availableEngines = Object.keys(aiFunctions);
+
+    if (!availableEngines.includes(engine)) {
+      return res.status(400).json({
+        error: `Input jenis ai di Parameter dengan benar!. List: ${availableEngines.join(', ')}`
+      });
+    }
+
+    const aiFunction = aiFunctions[engine];
+    return res.json(await aiFunction(text, logic, req.query.model));
+
+  } catch (err) {
+    console.error('Error processing text:', err);
+    res.status(500).json({ error: err.message });
+  }
+};
