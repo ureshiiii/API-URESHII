@@ -6,26 +6,16 @@
     "version": "1.0"
   },
   "paths": {
-    "/api/ai/{engine}": {
+    "/api/ai/gemini": {
       "get": {
-        "summary": "Menghasilkan teks menggunakan AI",
-        "description": "Endpoint ini menghasilkan teks berdasarkan input pengguna menggunakan berbagai mesin AI.",
+        "summary": "Menghasilkan teks menggunakan Gemini AI",
+        "description": "Endpoint ini menghasilkan teks berdasarkan input pengguna menggunakan mesin Gemini AI.",
         "parameters": [
-          {
-            "name": "engine",
-            "in": "path",
-            "required": true,
-            "description": "Jenis mesin AI yang ingin digunakan (gemini atau blackbox)",
-            "schema": {
-              "type": "string",
-              "enum": ["gemini", "blackbox"]
-            }
-          },
           {
             "name": "text",
             "in": "query",
             "required": true,
-            "description": "Teks masukan yang akan diolah oleh AI.",
+            "description": "Teks masukan yang akan diolah oleh Gemini AI.",
             "schema": {
               "type": "string",
               "example": "Tulis sebuah puisi tentang keindahan alam"
@@ -45,7 +35,7 @@
             "name": "model",
             "in": "query",
             "required": false,
-            "description": "Model AI spesifik yang ingin digunakan (opsional, tergantung jenis AI)",
+            "description": "Model Gemini AI spesifik yang ingin digunakan (opsional).",
             "schema": {
               "type": "string"
             }
@@ -53,10 +43,58 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response from AI engine"
+            "description": "Successful response from Gemini AI engine"
           },
           "400": {
-            "description": "Invalid engine or missing text parameter"
+            "description": "Missing text parameter"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/ai/blackbox": {
+      "get": {
+        "summary": "Menghasilkan teks menggunakan Blackbox AI",
+        "description": "Endpoint ini menghasilkan teks berdasarkan input pengguna menggunakan mesin Blackbox AI.",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "required": true,
+            "description": "Teks masukan yang akan diolah oleh Blackbox AI.",
+            "schema": {
+              "type": "string",
+              "example": "Tulis sebuah puisi tentang keindahan alam"
+            }
+          },
+          {
+            "name": "logic",
+            "in": "query",
+            "required": false,
+            "description": "Instruksi atau logika khusus untuk menghasilkan respons.",
+            "schema": {
+              "type": "string",
+              "example": "Gunakan gaya bahasa puitis"
+            }
+          },
+          {
+            "name": "model",
+            "in": "query",
+            "required": false,
+            "description": "Model Blackbox AI spesifik yang ingin digunakan (opsional).",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response from Blackbox AI engine"
+          },
+          "400": {
+            "description": "Missing text parameter"
           },
           "500": {
             "description": "Server error"
@@ -68,11 +106,6 @@
       "get": {
         "summary": "Get data from database",
         "description": "Khusus Parhan",
-        "security": [
-          {
-            "ApiKeyAuth": []
-          }
-        ],                
         "parameters": [
           {
             "in": "query",
@@ -106,13 +139,6 @@
           }
         }
       }
-    }
-  },
-  "securitySchemes": {
-    "ApiKeyAuth": {
-      "type": "apiKey",
-      "in": "query",
-      "name": "key"
     }
   }
 }
