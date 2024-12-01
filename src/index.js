@@ -2,7 +2,8 @@ const express = require('express');
 const apiRoutes = require('./route/api');
 const config = require('./config');
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('../swagger.json');
+const fs = require('fs');
+const path = require('path');
 
 const app = express();
 app.use(express.json());
@@ -29,15 +30,8 @@ app.use('/api/data', (req, res, next) => {
 // Route API
 app.use('/api', apiRoutes);
 // Swagger UI
-const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css"; 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, { customCssUrl: CSS_URL }));
-app.use('/docs', (req, res, next) => {
-  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-  res.set('Pragma', 'no-cache');
-  res.set('Expires', '0');
-  res.set('Surrogate-Control', 'no-store');
-  next();
-});
+app.use('/docs', express.static('node_modules/swagger-ui-dist'), swaggerUi.serve, swaggerUi.setup(swaggerDocument, options)
+);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
