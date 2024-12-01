@@ -12,5 +12,5 @@ module.exports = {
   
   // SYSTEM
   API_KEY: process.env.API_KEY || "lovefirsha",
-  allowedOrigins: ["https://www.ureshii.my.id", "https://ureshii.my.id", "https://api-ureshii.vercel.app"]
+  allowedOrigins: ["https://www.ureshii.my.id", "https://ureshii.my.id", "https://api-ureshii.vercel.app", "https://api-ureshii.vercel.app/docs"]
 };
