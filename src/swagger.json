@@ -1,0 +1,88 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Ureshii RestFul API",
+    "description": "Projects belajar API by Parhan",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/gemini": {
+      "get": {
+        "summary": "Menghasilkan teks menggunakan Gemini",
+        "description": "Endpoint ini menghasilkan teks berdasarkan input pengguna menggunakan Google Generative AI.",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "required": true,
+            "description": "Teks masukan yang akan diolah oleh AI.",
+            "schema": {
+              "type": "string",
+              "example": "Tulis sebuah puisi tentang keindahan alam"
+            }
+          },
+          {
+            "name": "logic",
+            "in": "query",
+            "required": false,
+            "description": "Instruksi atau logika khusus untuk menghasilkan respons.",
+            "schema": {
+              "type": "string",
+              "example": "Gunakan gaya bahasa puitis"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response from Gemini"
+          },
+          "400": {
+            "description": "Missing text parameter"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/api/data": {
+      "get": {
+        "summary": "Get data from database",
+        "description": "Khusus Parhan",                
+        "parameters": [
+          {
+            "in": "query",
+            "name": "key",
+            "schema": {
+              "type": "string"
+            },
+            "description": "API key"
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Type of data (donorData, dataAkun, etc.)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful data retrieval"
+          },
+          "400": {
+            "description": "Invalid data type"
+          },
+          "403": {
+            "description": "Invalid API key"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    }
+  }
+}
+
