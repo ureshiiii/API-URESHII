@@ -6,11 +6,21 @@
     "version": "1.0"
   },
   "paths": {
-    "/api/gemini": {
+    "/api/ai/{engine}": {
       "get": {
-        "summary": "Menghasilkan teks menggunakan Gemini",
-        "description": "Endpoint ini menghasilkan teks berdasarkan input pengguna menggunakan Google Generative AI.",
+        "summary": "Menghasilkan teks menggunakan AI",
+        "description": "Endpoint ini menghasilkan teks berdasarkan input pengguna menggunakan berbagai mesin AI.",
         "parameters": [
+          {
+            "name": "engine",
+            "in": "path",
+            "required": true,
+            "description": "Jenis mesin AI yang ingin digunakan (gemini atau blackbox)",
+            "schema": {
+              "type": "string",
+              "enum": ["gemini", "blackbox"]
+            }
+          },
           {
             "name": "text",
             "in": "query",
@@ -30,14 +40,23 @@
               "type": "string",
               "example": "Gunakan gaya bahasa puitis"
             }
+          },
+          {
+            "name": "model",
+            "in": "query",
+            "required": false,
+            "description": "Model AI spesifik yang ingin digunakan (opsional, tergantung jenis AI)",
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Successful response from Gemini"
+            "description": "Successful response from AI engine"
           },
           "400": {
-            "description": "Missing text parameter"
+            "description": "Invalid engine or missing text parameter"
           },
           "500": {
             "description": "Server error"
@@ -48,7 +67,12 @@
     "/api/data": {
       "get": {
         "summary": "Get data from database",
-        "description": "Khusus Parhan",                
+        "description": "Khusus Parhan",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],                
         "parameters": [
           {
             "in": "query",
@@ -83,6 +107,12 @@
         }
       }
     }
+  },
+  "securitySchemes": {
+    "ApiKeyAuth": {
+      "type": "apiKey",
+      "in": "query",
+      "name": "key"
+    }
   }
 }
-
