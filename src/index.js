@@ -1,59 +1,47 @@
-// Updated index.js to handle all possible errors gracefully without debugging
 const express = require('express');
 const apiRoutes = require('./route/api');
 const config = require('./config');
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
-const mysql = require('mysql2');
+const swaggerDocument = require('../swagger.json');
 
 const app = express();
 app.use(express.json());
 
-// CORS Middleware (Validation Disabled)
+// Validasi cors biar ga gampang di jebol
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*'); // Allow all origins
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS'); // Allow multiple methods
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end(); // Preflight request handling
+  const origin = req.headers.origin;
+  if (config.allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
   }
+  res.setHeader('Access-Control-Allow-Methods', 'GET');
   next();
 });
 
-// Database Connection
-const db = mysql.createConnection(config.dbConfig);
-db.connect((err) => {
-  if (err) {
-    console.error('Failed to connect to the database.');
-    process.exit(1);
-  }
-});
-
-// API Key validation for /api/data
+// Data khusus parhan
 app.use('/api/data', (req, res, next) => {
   const key = req.query.key;
   if (!key || key !== config.API_KEY) {
-    return res.status(403).json({ error: "Invalid or missing API key." });
+    return res.status(403).json({ Error: "Apikeynya mana bang?!" });
   }
   next();
 });
 
-// Route Handlers
+// All url route biar mantap
 app.use('/api', apiRoutes);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-// 404 Error Handler for unmatched routes
-app.use((req, res) => {
-  res.status(404).json({ error: "Route not found." });
-});
-
-// General Error Handler
-app.use((err, req, res, next) => {
-  res.status(500).json({ error: "Internal Server Error" });
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
+  swaggerOptions: {
+    url: 'https://api-ureshii.vercel.app/swagger.json'
+  }
+}));
+app.use('/api-docs', (req, res, next) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+  res.set('Surrogate-Control', 'no-store');
+  next();
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-  
