@@ -1,0 +1,14 @@
+name: Extract ZIP
+
+on:
+  push:
+    paths:
+      - '*.zip' # Memicu workflow ketika file ZIP di-push
+
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3 # Checkout kode repositori
+      - name: Extract ZIP
+        run: unzip *.zip # Menjalankan perintah unzip untuk mengekstrak semua file ZIP
