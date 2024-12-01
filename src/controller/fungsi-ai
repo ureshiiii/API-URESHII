@@ -2,7 +2,6 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const config = require('../config');
 const axios = require('axios');
 const FormData = require('form-data');
-const { fileTypeFromBuffer } = await import('file-type'); 
 
 const createSuccessResponse = (data, modelUsed, logicUsed) => ({
   success: true,
@@ -76,6 +75,7 @@ async function gemini(text, logic, model) {
 
 async function removebg(imageUrl) {
   try {
+    const { fileTypeFromBuffer } = await import('file-type'); 
     const response = await fetch(imageUrl);
     if (!response.ok) throw new Error(`Gagal mengunduh gambar. Status: ${response.status}`);
     const media = await response.buffer();
