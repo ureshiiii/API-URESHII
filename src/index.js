@@ -2,6 +2,7 @@ const express = require('express');
 const apiRoutes = require('./route/api');
 const config = require('./config');
 const swaggerUi = require('swagger-ui-express');
+const swaggerDoc = require('../swagger.json');
 const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.0.0/swagger-ui.min.css"; 
 const app = express();
 app.use(express.json());
@@ -31,7 +32,7 @@ app.use('/api', apiRoutes);
 app.use(
   '/docs',
   swaggerUi.serve,
-  swaggerUi.setup(undefined, {
+  swaggerUi.setup(swaggerDoc, {
     swaggerOptions: {
       url: 'https://api-ureshii.vercel.app/swagger.json'
     },
