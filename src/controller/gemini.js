@@ -1,7 +1,7 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const config = require('../config');
 
-exports.scrapeData = async (req, res) => {
+exports.gemini = async (req, res) => {
   try {
     const { text, logic } = req.query;
     const Used_Apikey = process.env.GOOGLE_API_KEY;
@@ -40,18 +40,9 @@ exports.scrapeData = async (req, res) => {
   } catch (err) {
     console.error('Error processing text:', err);
 
-    if (err.message.includes('API key not valid')) {
-      return res.status(401).json({ error: "API Key tidak valid." }); 
-    } else if (err.message.includes('Request failed with status code')) {
-      return res.status(400).json({ 
-        error: "Request ke layanan AI gagal.",
-        details: { message: err.message }
-      });
-    } else {
-      return res.status(500).json({ 
-        error: "Terjadi kesalahan server.",
-        details: { message: err.message }
-      });
-    }
+    res.status(500).json({
+      error: "Terjadi kesalahan server.",
+      detail: err.message,
+    });
   }
 };
