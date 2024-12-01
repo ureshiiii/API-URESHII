@@ -28,11 +28,22 @@ app.use('/api/data', (req, res, next) => {
   next();
 });
 
+// Middleware buat si swagger
+app.use('/docs', (req, res, next) => {
+  const originalSend = res.send;
+  res.send = function (body) {
+    if (typeof body === 'string' && body.includes('<head>')) {
+      body = body.replace('<head>', `<head><meta name="viewport" content="width=device-width, initial-scale=1">`);
+    }
+    originalSend.call(this, body);
+  };
+  next();
+});
+
 // Route API
 app.use('/api', apiRoutes);
 // Halaman dokumentasi
-app.use(
-  '/docs',
+app.use('/docs',
   swaggerUi.serve,
   swaggerUi.setup(swaggerDoc, {
     layout: "StandaloneLayout",
@@ -55,16 +66,6 @@ app.use(
     customCssUrl: CSS_URL,
   }),
 );
-app.use('/docs', (req, res, next) => {
-  const originalSend = res.send;
-  res.send = function (body) {
-    if (typeof body === 'string' && body.includes('<head>')) {
-      body = body.replace('<head>', `<head><meta name="viewport" content="width=device-width, initial-scale=1">`);
-    }
-    originalSend.call(this, body);
-  };
-  next();
-}); 
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
