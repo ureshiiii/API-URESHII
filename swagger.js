@@ -26,8 +26,8 @@ const createResponse = (code, description) => ({
 const swaggerConfig = {
   openapi: "3.0.0",
   info: {
-    title: "Ureshii API",
-    description: "Projects belajar API by Parhan. Kamu dapat menggunakan API ini untuk kebutuhan Bot WhatsApp atau Lainnya!",
+    title: "Ureshii RestFul API",
+    description: "Projects belajar API by Parhan",
     version: "1.0",
     termsOfService: "https://ureshii.my.id/public/dukungan/syarat-ketentuan.html",
     contact: {
@@ -75,6 +75,20 @@ const swaggerConfig = {
       {
         ...createResponse(200, "Successful response"),
         ...createResponse(400, "Missing text parameter"),
+        ...createResponse(500, "Server error"),
+      }
+    ),
+    "/api/ai/removebg": createPath(
+      "get",
+      ["AI"],
+      "RemoveBG",
+      "Removebg gambar dengan AI",
+      [
+        createParameter("url", true, "Url gambar", "string", ""),
+      ],
+      {
+        ...createResponse(200, "Successful response"),
+        ...createResponse(400, "Missing url parameter"),
         ...createResponse(500, "Server error"),
       }
     ),
