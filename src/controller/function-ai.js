@@ -120,7 +120,7 @@ async function generateTTS(text, lang = 'id') {
         reject(new Error(`Google TTS Error: ${err.message}`));
       } else {
         const audioBuffer = readFileSync(filePath, 'binary');
-        unlinkSync(filePath); 
+        // unlinkSync(filePath); 
         resolve(audioBuffer);
       }
     });
