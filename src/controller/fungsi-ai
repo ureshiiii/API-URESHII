@@ -88,7 +88,7 @@ async function removebg(imageURL) {
       contentType: mimeType
     });
 
-    const apiResponse = await fetch('https://api.remove.bg/v1.0/removebg', {
+    const apiResponse = fetch('https://api.remove.bg/v1.0/removebg', {
       method: 'POST',
       headers: {
         'X-Api-Key': 'SgEo63fvZ7XaBWbbc3J925Hd',
