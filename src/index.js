@@ -50,8 +50,8 @@ app.use('/docs',
     swaggerOptions: {
       url: 'https://api-ureshii.vercel.app/swagger.json' 
     },
-    customCss: 
-      `.swagger-ui .topbar { 
+    .customCss: `
+      .swagger-ui .topbar { 
         display: none; 
       }
       .swagger-ui .opblock .opblock-summary-path-description-wrapper { 
@@ -65,7 +65,20 @@ app.use('/docs',
       .swagger-ui .opblock-summary .copy-to-clipboard { 
         display: none; 
       }
-      `,
+      .swagger-ui .opblock-summary {
+        padding: 5px !important;
+        overflow: hidden;
+      }
+      .swagger-ui .response-body {
+        max-width: 100% !important;
+        overflow: hidden !important;
+        padding: 10px !important;
+        box-sizing: border-box;
+      }
+      .swagger-ui .opblock-body {
+        padding: 0 !important;
+      }
+    `,
     customCssUrl: CSS_URL,
   }),
 );
