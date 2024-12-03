@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "description": "RESTful API for WhatsApp Bot",
   "main": "src/index.js",
-  "type": "module",
+  "type": "module",  
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js"
   },
-  "author": "Your Name",
+  "author": "Parhan",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
@@ -20,7 +20,9 @@
     "node-fetch": "^3.3.1",            
     "mime-types": "^2.1.35",            
     "file-type": "^18.5.0",            
-    "swagger-ui-express": "^4.3.0"
+    "swagger-ui-express": "^4.3.0",
+    "gtts": "^0.2.2",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
