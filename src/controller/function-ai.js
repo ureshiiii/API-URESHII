@@ -117,24 +117,17 @@ async function generateTTS(text) {
   return new Promise((resolve, reject) => {
     try {
       let tts = gtts('id');
-      const filePath = join('../../tmp', uuidv4() + '.wav'); 
-
-      tts.save(filePath, (err, result) => {
-        if (err) {
-          reject(err); 
-        } else {
-          resolve(readFileSync(filePath));
-          unlinkSync(filePath); 
-        }
+      let filePath = join('../tmp', uuidv4() + '.wav');
+      tts.save(filePath, text, () => {
+        resolve(readFileSync(filePath));
+        unlinkSync(filePath);
       });
-    } catch (e) { 
-      reject(e); 
-    }
+    } catch (e) { reject(e); }
   });
 }
 async function googletts(text) { 
   try {
-    const audioBuffer = await generateTTS(text, 'id');
+    const audioBuffer = await generateTTS(text);
     return audioBuffer;
   } catch (error) {
     console.error('Error in googletts:', error); 
