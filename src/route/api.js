@@ -1,9 +1,10 @@
-const express = require('express');
+import express from 'express';
+import { process } from '../controller/api-ai.js';
+import { getData } from '../controller/mysql-data.js';
+
 const router = express.Router();
-const aiController = require('../controller/api-ai'); 
-const dataController = require('../controller/mysql-data');
 
-router.get('/ai/:engine', aiController.process);
-router.get('/data', dataController.getData); 
+router.get('/ai/:engine', process);
+router.get('/data', getData); 
 
-module.exports = router;
+export default router;
