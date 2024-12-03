@@ -1,9 +1,9 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import fetch from 'node-fetch'
 import config from '../config.js';
 import axios from 'axios';
 import FormData from 'form-data';
 import mime from 'mime-types';
-import fetch from 'node-fetch';
 
 const createSuccessResponse = (data, modelUsed, logicUsed) => ({
   success: true,
@@ -99,7 +99,6 @@ async function gemini(text, logic, model) {
 
 async function removebg(imageURL) {
   try {
-    const fetch = await import('node-fetch');
     const imageResponse = await axios.get(imageURL, { responseType: 'arraybuffer' });
     const mimeType = mime.lookup(imageURL) || 'image/jpeg';
     const imageBuffer = Buffer.from(imageResponse.data);
@@ -111,11 +110,11 @@ async function removebg(imageURL) {
       contentType: mimeType
     });
 
-    const apiResponse = await fetch('https://api.remove.bg/v1.0/removebg', {
-      method: 'POST',
-      headers: { 'X-Api-Key': 'SgEo63fvZ7XaBWbbc3J925Hd' },
-      body: formData,
-    });    
+    const response = await fetch("https://api.remove.bg/v1.0/removebg", {
+        method: "POST",
+        headers: { "X-Api-Key": "SgEo63fvZ7XaBWbbc3J925Hd" },
+        body: formData,
+    });
     if (apiResponse.status === 200) { 
       return Buffer.from(await apiResponse.data); 
     } else {
