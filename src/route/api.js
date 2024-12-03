@@ -1,5 +1,5 @@
 import express from 'express';
-import { process } from '../controller/api-ai.js';
+import { process } from '../controller/route-ai.js';
 import { getData } from '../controller/mysql-data.js';
 
 const router = express.Router();
