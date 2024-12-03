@@ -113,27 +113,36 @@ async function removebg(imageURL) {
 }
 
 // GOOGLE TTS
-async function generateTTS(text) {
+async function generateTTS(text, lang = 'id') {
   return new Promise((resolve, reject) => {
     try {
-      let tts = gtts('id');
-      let filePath = join('../../tmp', uuidv4() + '.wav');
-      tts.save(filePath, text, () => {
-        resolve(readFileSync(filePath));
-        unlinkSync(filePath);
+      const tts = new gtts(text, lang);
+      const filePath = join(__dirname, '../../tmp', uuidv4() + '.wav');
+
+      tts.save(filePath, (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          const audioBuffer = readFileSync(filePath, 'binary');
+          unlinkSync(filePath);
+          resolve(audioBuffer);
+        }
       });
-    } catch (e) { reject(e); }
+    } catch (e) {
+      reject(e);
+    }
   });
 }
-async function googletts(text) { 
+async function googletts(text, lang = 'id') {
   try {
-    const audioBuffer = await generateTTS(text);
+    const audioBuffer = await generateTTS(text, lang);
     return audioBuffer;
   } catch (error) {
-    console.error('Error in googletts:', error); 
+    console.error('Error in googletts:', error);
     throw new Error(`Google TTS Error: ${error.message}`);
   }
 }
+
 
 export {
   blackbox,
