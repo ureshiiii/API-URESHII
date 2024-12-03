@@ -21,7 +21,7 @@
     "mime-types": "^2.1.35",            
     "file-type": "^18.5.0",            
     "swagger-ui-express": "^4.3.0",
-    "gtts": "^0.2.2",
+    "node-gtts": "^2.0.2",       
     "uuid": "^9.0.0"
   },
   "devDependencies": {
