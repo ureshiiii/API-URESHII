@@ -8,10 +8,6 @@ import gtts from 'node-gtts';
 import { readFileSync, unlinkSync } from 'fs';
 import { join } from 'path';
 import { v4 as uuidv4 } from 'uuid';
-import { dirname } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const createSuccessResponse = (data, modelUsed, logicUsed) => ({
   success: true,
@@ -116,14 +112,15 @@ async function removebg(imageURL) {
 async function generateTTS(text, lang = 'id') {
   return new Promise((resolve, reject) => {
     const tts = new gtts(lang);
-    const filePath = join(__dirname, '../../tmp', uuidv4() + '.wav');
+    const filePath = join('tmp', uuidv4() + '.wav');
 
     tts.save(filePath, text, (err) => {
       if (err) {
+        console.error('Error saving audio:', err);
         reject(new Error(`Google TTS Error: ${err.message}`));
       } else {
         const audioBuffer = readFileSync(filePath, 'binary');
-        unlinkSync(filePath);
+        unlinkSync(filePath); 
         resolve(audioBuffer);
       }
     });
