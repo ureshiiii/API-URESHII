@@ -64,12 +64,10 @@ app.use('/docs',
         gap: 10px 20px;
         padding: 10px; 
         width: 100%; 
-        background-color: #1f1f1f;
       }
       /* Warna dan padding untuk summary */
       .swagger-ui .opblock-summary {
         padding: 10px;
-        background-color: #2d2d2d !important;
         border-radius: 5px;
         margin-bottom: 10px;
       }
@@ -80,7 +78,6 @@ app.use('/docs',
       /* Responsif untuk API method block */
       .swagger-ui .opblock-body {
         padding: 20px !important;
-        background-color: #353535 !important;
         border-radius: 5px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
@@ -91,16 +88,13 @@ app.use('/docs',
         padding: 15px !important;
         box-sizing: border-box;
         background-color: #282828;
-        color: #fff;
         border-radius: 5px;
       }
       /* Modifikasi tabel dan teks di dalam Swagger UI */
       .swagger-ui .models {
-        color: #e0e0e0;
         font-size: 14px;
       }
       .swagger-ui .model-box {
-        background-color: #333 !important;
         border-radius: 5px;
       }
       /* Responsif di perangkat mobile */
@@ -121,4 +115,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-                                
+  
