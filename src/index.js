@@ -50,7 +50,7 @@ app.use('/docs',
     swaggerOptions: {
       url: 'https://api-ureshii.vercel.app/swagger.json' 
     },
-    .customCss: `
+    customCss: `
       .swagger-ui .topbar { 
         display: none; 
       }
