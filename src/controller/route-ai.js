@@ -24,8 +24,9 @@ export const process = async (req, res) => {
       }
     
       try {
-        const cdnUrl = await aiFunctions.removebg(url.trim());
-        return res.json({ success: true, data: { url: cdnUrl } });
+        const imageBuffer = await aiFunctions.removebg(url.trim());
+        res.set('Content-Type', 'image/png'); 
+        res.send(imageBuffer); 
       } catch (error) {
         return res.status(500).json({
           error: "Gagal memproses gambar.",
