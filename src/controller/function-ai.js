@@ -118,7 +118,7 @@ async function generateTTS(text, lang = 'id') {
   return new Promise((resolve, reject) => {
     try {
       let tts = gtts(lang);
-      const filePath = join(global.__dirname(import.meta.url), '../../tmp', uuidv4() + '.wav'); 
+      const filePath = join('../../tmp', uuidv4() + '.wav'); 
 
       tts.save(filePath, (err, result) => {
         if (err) {
