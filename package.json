@@ -1,7 +1,7 @@
 {
-  "name": "whatsapp-bot-api",
+  "name": "ureshii-api",
   "version": "1.0.0",
-  "description": "RESTful API for WhatsApp Bot with Gemini Integration",
+  "description": "RESTful API for WhatsApp Bot",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
