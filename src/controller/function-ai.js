@@ -4,6 +4,10 @@ import config from '../config.js';
 import axios from 'axios';
 import FormData from 'form-data';
 import mime from 'mime-types';
+import { join } from 'path';
+import { readFileSync, unlinkSync } from 'fs';
+import gtts from 'gtts'; 
+import { v4 as uuidv4 } from 'uuid';
 
 const createSuccessResponse = (data, modelUsed, logicUsed) => ({
   success: true,
@@ -16,29 +20,7 @@ const createSuccessResponse = (data, modelUsed, logicUsed) => ({
   },
 });
 
-async function callAPI(url, method, data, headers) {
-  try {
-    const response = await axios({
-      url,
-      method,
-      data,
-      headers
-    });
-    return response.data;
-  } catch (error) {
-    if (error.response) {
-      console.error("API Error:", error.response.status, error.response.data);
-      throw new Error(`API Error: ${error.response.status} - ${error.response.data}`);
-    } else if (error.request) {
-      console.error("API Error:", error.request);
-      throw new Error(`API Error: No response received`);
-    } else {
-      console.error('API Error:', error.message);
-      throw new Error(`API Error: ${error.message}`);
-    }
-  }
-}
-
+// BLACKBOX
 async function blackbox(text, logic, model) {
   try {
     const prompt = `${logic ? `${logic}\n` : ''}${text}`;
@@ -76,6 +58,7 @@ async function blackbox(text, logic, model) {
   }
 }
 
+// GEMINI
 async function gemini(text, logic, model) {
   try {
     const usedApiKey = process.env.GOOGLE_API_KEY;
@@ -97,6 +80,7 @@ async function gemini(text, logic, model) {
   }
 }
 
+// REMOVE BG
 async function removebg(imageURL) {
   try {
     const imageResponse = await axios.get(imageURL, { responseType: 'arraybuffer' });
@@ -128,8 +112,40 @@ async function removebg(imageURL) {
   }
 }
 
+// GOOGLE TTS
+async function generateTTS(text, lang = 'id') {
+  console.log(lang, text);
+  return new Promise((resolve, reject) => {
+    try {
+      const tts = new gtts(text, lang);
+      const filePath = join(global.__dirname(import.meta.url), '../tmp', uuidv4() + '.wav'); 
+
+      tts.save(filePath, (err, result) => {
+        if (err) {
+          reject(err); 
+        } else {
+          resolve(readFileSync(filePath));
+          unlinkSync(filePath); 
+        }
+      });
+    } catch (e) { 
+      reject(e); 
+    }
+  });
+}
+async function googletts(text, lang = 'id') { 
+  try {
+    const audioBuffer = await generateTTS(text, lang);
+    return audioBuffer;
+  } catch (error) {
+    console.error('Error in googletts:', error); 
+    throw new Error(`Google TTS Error: ${error.message}`);
+  }
+}
+
 export {
   blackbox,
   gemini,
   removebg,
+  googletts,
 };
