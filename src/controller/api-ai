@@ -22,16 +22,15 @@ exports.process = async (req, res) => {
       if (!url || typeof url !== 'string' || url.trim() === '') {
         return res.status(400).json({ error: "Parameter 'url' harus berupa string dan tidak boleh kosong." });
       }
-
+    
       try {
         const cdnUrl = await aiFunctions.removebg(url);
         return res.json({ success: true, data: { url: cdnUrl } });
       } catch (error) {
-        console.error('Error processing image:', error);
-        return res.status(500).json({ 
-          error: "Gagal memproses gambar.", 
-          details: error.message
-        }); 
+        return res.status(500).json({
+          error: "Gagal memproses gambar.",
+          details: error.message,
+        });
       }
     }
 
