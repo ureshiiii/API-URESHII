@@ -1,7 +1,7 @@
-const config = require('../config');
-const aiFunctions = require('./fungsi-ai');
+import config from '../config.js';
+import * as aiFunctions from './fungsi-ai.js';
 
-exports.process = async (req, res) => {
+export const process = async (req, res) => {
   try {
     const engine = req.params.engine;
     const { text, logic, url } = req.query;
