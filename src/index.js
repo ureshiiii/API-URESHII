@@ -60,16 +60,14 @@ app.use('/docs',
       .swagger-ui .opblock .opblock-summary-path-description-wrapper { 
         align-items: center; 
         display: flex; 
-        flex-wrap: wrap; 
-        gap: 10px 20px;
+        justify-content: space-between;
         padding: 10px; 
-        width: 100%; 
+        width: 90%; 
       }
       /* Warna dan padding untuk summary */
       .swagger-ui .opblock-summary {
         padding: 10px;
         border-radius: 5px;
-        margin-bottom: 10px;
       }
       /* Menghilangkan tombol copy-to-clipboard */
       .swagger-ui .opblock-summary .copy-to-clipboard { 
@@ -115,4 +113,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-  
+        
