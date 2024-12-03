@@ -117,7 +117,7 @@ async function generateTTS(text) {
   return new Promise((resolve, reject) => {
     try {
       let tts = gtts('id');
-      let filePath = join('../tmp', uuidv4() + '.wav');
+      let filePath = join('../../tmp', uuidv4() + '.wav');
       tts.save(filePath, text, () => {
         resolve(readFileSync(filePath));
         unlinkSync(filePath);
