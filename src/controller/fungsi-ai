@@ -73,11 +73,11 @@ async function gemini(text, logic, model) {
   }
 }
 
-async function removebg(url) {
+async function removebg(imageURL) {
   try {
     const formData = new FormData();
     formData.append("size", "auto");
-    formData.append("image_url", url);
+    formData.append("image_url", imageURL);
 
     const response = await fetch("https://api.remove.bg/v1.0/removebg", {
       method: "POST",
