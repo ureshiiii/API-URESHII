@@ -3,6 +3,7 @@ import config from '../config.js';
 import axios from 'axios';
 import FormData from 'form-data';
 import mime from 'mime-types';
+import fetch from 'node-fetch';
 
 const createSuccessResponse = (data, modelUsed, logicUsed) => ({
   success: true,
@@ -14,6 +15,29 @@ const createSuccessResponse = (data, modelUsed, logicUsed) => ({
     length: data.length,
   },
 });
+
+async function callAPI(url, method, data, headers) {
+  try {
+    const response = await axios({
+      url,
+      method,
+      data,
+      headers
+    });
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      console.error("API Error:", error.response.status, error.response.data);
+      throw new Error(`API Error: ${error.response.status} - ${error.response.data}`);
+    } else if (error.request) {
+      console.error("API Error:", error.request);
+      throw new Error(`API Error: No response received`);
+    } else {
+      console.error('API Error:', error.message);
+      throw new Error(`API Error: ${error.message}`);
+    }
+  }
+}
 
 async function blackbox(text, logic, model) {
   try {
@@ -87,17 +111,11 @@ async function removebg(imageURL) {
       contentType: mimeType
     });
 
-    const apiResponse = await axios.post(
-      'https://api.remove.bg/v1.0/removebg', 
-      formData,
-      {
-        headers: {
-          'X-Api-Key': 'SgEo63fvZ7XaBWbbc3J925Hd',
-          ...formData.getHeaders()
-        }
-      }
-    );
-
+    const apiResponse = await fetch('https://api.remove.bg/v1.0/removebg', {
+      method: 'POST',
+      headers: { 'X-Api-Key': 'SgEo63fvZ7XaBWbbc3J925Hd' },
+      body: formData,
+    });    
     if (apiResponse.status === 200) { 
       return Buffer.from(await apiResponse.data); 
     } else {
