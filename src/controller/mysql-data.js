@@ -1,6 +1,6 @@
-const { queryDatabase } = require('../db-mysql');
+import { queryDatabase } from '../db-mysql.js';
 
-exports.getData = async (req, res) => {
+export const getData = async (req, res) => {
   try {
     const type = req.query.type || null;
 
