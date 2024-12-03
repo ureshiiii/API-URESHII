@@ -39,7 +39,9 @@ export const process = async (req, res) => {
     }
 
     const aiFunction = aiFunctions[engine];
-    const result = await aiFunction(text, logic, req.query.model);
+    const logicToUse = logic || config.defaultLogic; 
+    const modelToUse = req.query.model || config.defaultModel; 
+    const result = await aiFunction(text, logicToUse, modelToUse);
     return res.json({ success: true, data: result }); 
 
   } catch (err) {
