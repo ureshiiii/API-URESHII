@@ -17,14 +17,14 @@ exports.process = async (req, res) => {
         error: `Input jenis ai di Parameter dengan benar!. List: ${availableEngines.join(', ')}`
       });
     }
-
+    
     if (engine === 'removebg') {
       if (!url || typeof url !== 'string' || url.trim() === '') {
         return res.status(400).json({ error: "Parameter 'url' harus berupa string dan tidak boleh kosong." });
       }
     
       try {
-        const cdnUrl = await aiFunctions.removebg(url);
+        const cdnUrl = await aiFunctions.removebg(url.trim());
         return res.json({ success: true, data: { url: cdnUrl } });
       } catch (error) {
         return res.status(500).json({
@@ -33,7 +33,7 @@ exports.process = async (req, res) => {
         });
       }
     }
-
+    
     if (!text || typeof text !== 'string' || text.trim() === '') {
       return res.status(400).json({ error: "Parameter 'text' harus berupa string dan tidak boleh kosong." });
     }
