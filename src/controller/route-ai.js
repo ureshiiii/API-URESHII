@@ -1,5 +1,5 @@
 import config from '../config.js';
-import * as aiFunctions from './fungsi-ai.js';
+import * as aiFunctions from './function-ai.js';
 
 export const process = async (req, res) => {
   try {
