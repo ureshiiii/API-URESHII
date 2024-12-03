@@ -4,9 +4,9 @@ import config from '../config.js';
 import axios from 'axios';
 import FormData from 'form-data';
 import mime from 'mime-types';
-import { join } from 'path';
+import gtts from 'node-gtts';
 import { readFileSync, unlinkSync } from 'fs';
-import gtts from 'gtts'; 
+import { join } from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
 const createSuccessResponse = (data, modelUsed, logicUsed) => ({
