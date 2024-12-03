@@ -92,6 +92,20 @@ const swaggerConfig = {
         ...createResponse(500, "Server error"),
       }
     ),
+    "/api/ai/googletts": createPath(
+      "get",
+      ["AI"],
+      "Google TTS",
+      "Google TTS adalah Text To Speech AI",
+      [
+        createParameter("text", true, "Text / Prompt", "string", "Halo semuanya, nama saya farhan"),
+      ],
+      {
+        ...createResponse(200, "Successful response"),
+        ...createResponse(400, "Missing text parameter"),
+        ...createResponse(500, "Server error"),
+      }
+    ),
     "/api/data": createPath(
       "get",
       ["Owner"],
