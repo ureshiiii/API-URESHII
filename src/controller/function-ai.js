@@ -114,7 +114,6 @@ async function removebg(imageURL) {
 
 // GOOGLE TTS
 async function generateTTS(text) {
-  console.log(lang, text);
   return new Promise((resolve, reject) => {
     try {
       let tts = gtts('id');
