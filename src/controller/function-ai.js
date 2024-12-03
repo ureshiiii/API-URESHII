@@ -112,7 +112,7 @@ async function removebg(imageURL) {
 async function generateTTS(text, lang = 'id') {
   return new Promise((resolve, reject) => {
     const tts = new gtts(lang);
-    const filePath = join(process.cwd(), uuidv4() + '.wav');
+    const filePath = join('/tmp', uuidv4() + '.wav');
 
     tts.save(filePath, text, (err) => {
       if (err) {
