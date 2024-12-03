@@ -116,7 +116,7 @@ async function removebg(imageURL) {
         body: formData,
     });
     if (response.status === 200) { 
-      let hasil = await respone.buffer();
+      let hasil = await response.buffer();
       return hasil;
     } else {
       const errorDetails = await response.data;
