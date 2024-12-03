@@ -115,7 +115,7 @@ async function removebg(imageURL) {
         headers: { "X-Api-Key": "SgEo63fvZ7XaBWbbc3J925Hd" },
         body: formData,
     });
-    if (apiResponse.status === 200) { 
+    if (response.status === 200) { 
       return Buffer.from(await response.data); 
     } else {
       const errorDetails = await response.data;
