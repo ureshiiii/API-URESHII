@@ -1,8 +1,8 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
-const config = require('../config');
-const axios = require('axios');
-const FormData = require("form-data");
-const mime = require('mime-types');
+import { GoogleGenerativeAI } from '@google/generative-ai';
+import config from '../config.js';
+import axios from 'axios';
+import FormData from 'form-data';
+import mime from 'mime-types';
 
 const createSuccessResponse = (data, modelUsed, logicUsed) => ({
   success: true,
@@ -88,10 +88,10 @@ async function removebg(imageURL) {
       contentType: mimeType
     });
 
-    const apiResponse = fetch('https://api.remove.bg/v1.0/removebg', {
+    const apiResponse = await fetch('https://api.remove.bg/v1.0/removebg', {
       method: 'POST',
       headers: {
-        'X-Api-Key': 'SgEo63fvZ7XaBWbbc3J925Hd',
+        'X-Api-Key': 'SgEo63fvZ7XaBWbbc3J925Hd', 
       },
       body: formData,
     });
@@ -109,7 +109,7 @@ async function removebg(imageURL) {
   }
 }
 
-module.exports = {
+export {
   blackbox,
   gemini,
   removebg,
