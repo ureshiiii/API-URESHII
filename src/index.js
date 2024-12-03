@@ -52,11 +52,14 @@ app.use('/docs',
       url: 'https://api-ureshii.vercel.app/swagger.json',
     },
     customCss: `
-      /* Sembunyikan topbar untuk desain minimalis */
       .swagger-ui .topbar { 
         display: none; 
       }
-      /* Menyesuaikan elemen tombol dan kolom deskripsi */
+      .swagger-ui .opblock-summary {
+        border: none; 
+        padding: 10px;
+        border-radius: 5px;
+      }
       .swagger-ui .opblock .opblock-summary-path-description-wrapper { 
         align-items: center; 
         display: flex; 
@@ -64,22 +67,24 @@ app.use('/docs',
         padding: 10px; 
         width: 90%; 
       }
-      /* Warna dan padding untuk summary */
-      .swagger-ui .opblock-summary {
-        padding: 10px;
-        border-radius: 5px;
+      .swagger-ui .opblock-summary-path {
+        justify-content: flex-start;
       }
-      /* Menghilangkan tombol copy-to-clipboard */
+      .swagger-ui .opblock-summary-operation {
+        justify-content: flex-end; 
+      }
+      .swagger-ui .opblock-summary-description {
+        text-align: center;
+        flex-grow: 1; 
+      }
       .swagger-ui .opblock-summary .copy-to-clipboard { 
         display: none; 
       }
-      /* Responsif untuk API method block */
       .swagger-ui .opblock-body {
         padding: 20px !important;
         border-radius: 5px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
-      /* Mengatur responsif untuk body response */
       .swagger-ui .response-body {
         max-width: 100% !important;
         overflow: hidden !important;
@@ -88,21 +93,19 @@ app.use('/docs',
         background-color: #282828;
         border-radius: 5px;
       }
-      /* Modifikasi tabel dan teks di dalam Swagger UI */
+      .swagger-ui .response-body audio {
+        width: 100%; 
+        max-width: 100%; 
+      }
+      .swagger-ui .response-body button {
+        padding: 5px 10px; 
+        font-size: 12px;  
+      } 
       .swagger-ui .models {
         font-size: 14px;
       }
       .swagger-ui .model-box {
         border-radius: 5px;
-      }
-      /* Responsif di perangkat mobile */
-      @media (max-width: 768px) {
-        .swagger-ui .opblock-summary-path-description-wrapper {
-          flex-direction: column;
-        }
-        .swagger-ui .opblock-summary {
-          margin-bottom: 15px;
-        }
       }
     `,
     customCssUrl: CSS_URL,
@@ -113,4 +116,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-        
