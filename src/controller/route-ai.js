@@ -35,6 +35,23 @@ export const process = async (req, res) => {
       }
     }
     
+    if (engine === 'googletts') { 
+      if (!text || typeof text !== 'string' || text.trim() === '') {
+        return res.status(400).json({ error: "Parameter 'text' harus berupa string dan tidak boleh kosong." });
+      }
+
+      try {
+        const audioBuffer = await aiFunctions.googletts(text.trim(), req.query.lang); 
+        res.set('Content-Type', 'audio/wav'); 
+        res.send(audioBuffer);
+      } catch (error) {
+        return res.status(500).json({
+          error: "Gagal memproses audio.",
+          details: error.message,
+        });
+      }
+    }
+    
     if (!text || typeof text !== 'string' || text.trim() === '') {
       return res.status(400).json({ error: "Parameter 'text' harus berupa string dan tidak boleh kosong." });
     }
