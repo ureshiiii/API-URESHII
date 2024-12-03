@@ -26,8 +26,8 @@ const createResponse = (code, description) => ({
 const swaggerConfig = {
   openapi: "3.0.0",
   info: {
-    title: "Ureshii RestFul API",
-    description: "Projects belajar API by Parhan",
+    title: "Ureshii API",
+    description: "Projects belajar API by Parhan. Kamu bisa menggunakan API ini untuk kebutuhan fitur Bot WhatsApp atau Lainnya!",
     version: "1.0",
     termsOfService: "https://ureshii.my.id/public/dukungan/syarat-ketentuan.html",
     contact: {
