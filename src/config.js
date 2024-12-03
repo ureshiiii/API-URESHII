@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   // DB SQL
   dbConfig: {
     host: process.env.DB_HOST || "sql12.freemysqlhosting.net",
