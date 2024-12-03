@@ -76,6 +76,7 @@ async function removebg(url) {
   try {
     const FormData = require('form-data');
     const form = new FormData();
+
     form.append("size", "auto");
     form.append("image_url", url);
 
@@ -89,8 +90,8 @@ async function removebg(url) {
     });
 
     if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Remove.bg API Error: ${errorText}`);
+      const errorDetails = await response.text();
+      throw new Error(`Remove.bg API Error: ${errorDetails}`);
     }
 
     const result = await response.json();
@@ -103,6 +104,7 @@ async function removebg(url) {
     throw new Error(`Remove BG Error: ${err.message}`);
   }
 }
+
 
 module.exports = {
   blackbox,
