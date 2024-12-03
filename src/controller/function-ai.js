@@ -6,7 +6,8 @@ import FormData from 'form-data';
 import mime from 'mime-types';
 import gtts from 'node-gtts';
 import { readFileSync, unlinkSync } from 'fs';
-import path from 'path';
+import { join } from 'path';
+import os from 'os';
 import { v4 as uuidv4 } from 'uuid';
 
 const createSuccessResponse = (data, modelUsed, logicUsed) => ({
@@ -111,13 +112,24 @@ async function removebg(imageURL) {
 
 async function generateTTS(text, lang = 'id') {
   return new Promise((resolve, reject) => {
-    const tts = gtts(lang);
-    let filePath = join('../../tmp', uuidv4 + '.wav');
-
-    tts.save(filePath, text, () => {
-        resolve(readFileSync(filePath));
-        unlinkSync(filePath);
-    });
+    try {
+      const tts = gtts(lang);
+      const filePath = join(os.tmpdir(), `${uuidv4()}.wav`);
+      tts.save(filePath, text, async (err) => {
+        if (err) {
+          return reject(new Error(`TTS Save Error: ${err.message}`));
+        }
+        try {
+          const fileData = readFileSync(filePath);
+          unlinkSync(filePath);
+          resolve(fileData);
+        } catch (fsError) {
+          reject(new Error(`File Error: ${fsError.message}`));
+        }
+      });
+    } catch (error) {
+      reject(new Error(`TTS Initialization Error: ${error.message}`));
+    }
   });
 }
 async function googletts(text, lang = 'id') {
@@ -129,10 +141,10 @@ async function googletts(text, lang = 'id') {
     throw new Error(`Google TTS Error: ${error.message}`);
   }
 }
+
 export {
   blackbox,
   gemini,
   removebg,
   googletts,
 };
-  
