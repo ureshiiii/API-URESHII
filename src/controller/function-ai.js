@@ -116,7 +116,8 @@ async function removebg(imageURL) {
         body: formData,
     });
     if (response.status === 200) { 
-      return Buffer.from(await response.data); 
+      let hasil = await respone.buffer();
+      return hasil;
     } else {
       const errorDetails = await response.data;
       throw new Error(`Remove.bg API Error: ${response.status} - ${errorDetails}`);
