@@ -113,11 +113,11 @@ async function removebg(imageURL) {
 }
 
 // GOOGLE TTS
-async function generateTTS(text, lang = 'id') {
+async function generateTTS(text) {
   console.log(lang, text);
   return new Promise((resolve, reject) => {
     try {
-      let tts = gtts(lang);
+      let tts = gtts('id');
       const filePath = join('../../tmp', uuidv4() + '.wav'); 
 
       tts.save(filePath, (err, result) => {
@@ -133,9 +133,9 @@ async function generateTTS(text, lang = 'id') {
     }
   });
 }
-async function googletts(text, lang = 'id') { 
+async function googletts(text) { 
   try {
-    const audioBuffer = await generateTTS(text, lang);
+    const audioBuffer = await generateTTS(text, 'id');
     return audioBuffer;
   } catch (error) {
     console.error('Error in googletts:', error); 
