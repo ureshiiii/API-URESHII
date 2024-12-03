@@ -42,41 +42,75 @@ app.use('/docs', (req, res, next) => {
 
 // Route API
 app.use('/api', apiRoutes);
+
 // Halaman dokumentasi
 app.use('/docs',
   swaggerUi.serve,
   swaggerUi.setup(swaggerDoc, {
     layout: "StandaloneLayout",
     swaggerOptions: {
-      url: 'https://api-ureshii.vercel.app/swagger.json' 
+      url: 'https://api-ureshii.vercel.app/swagger.json',
     },
     customCss: `
+      /* Sembunyikan topbar untuk desain minimalis */
       .swagger-ui .topbar { 
         display: none; 
       }
+      /* Menyesuaikan elemen tombol dan kolom deskripsi */
       .swagger-ui .opblock .opblock-summary-path-description-wrapper { 
         align-items: center; 
         display: flex; 
         flex-wrap: wrap; 
-        gap: 0 10px;
-        padding: 0 10px; 
+        gap: 10px 20px;
+        padding: 10px; 
         width: 100%; 
+        background-color: #1f1f1f;
       }
+      /* Warna dan padding untuk summary */
+      .swagger-ui .opblock-summary {
+        padding: 10px;
+        background-color: #2d2d2d !important;
+        border-radius: 5px;
+        margin-bottom: 10px;
+      }
+      /* Menghilangkan tombol copy-to-clipboard */
       .swagger-ui .opblock-summary .copy-to-clipboard { 
         display: none; 
       }
-      .swagger-ui .opblock-summary {
-        padding: 5px !important;
-        overflow: hidden;
+      /* Responsif untuk API method block */
+      .swagger-ui .opblock-body {
+        padding: 20px !important;
+        background-color: #353535 !important;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
+      /* Mengatur responsif untuk body response */
       .swagger-ui .response-body {
         max-width: 100% !important;
         overflow: hidden !important;
-        padding: 10px !important;
+        padding: 15px !important;
         box-sizing: border-box;
+        background-color: #282828;
+        color: #fff;
+        border-radius: 5px;
       }
-      .swagger-ui .opblock-body {
-        padding: 0 !important;
+      /* Modifikasi tabel dan teks di dalam Swagger UI */
+      .swagger-ui .models {
+        color: #e0e0e0;
+        font-size: 14px;
+      }
+      .swagger-ui .model-box {
+        background-color: #333 !important;
+        border-radius: 5px;
+      }
+      /* Responsif di perangkat mobile */
+      @media (max-width: 768px) {
+        .swagger-ui .opblock-summary-path-description-wrapper {
+          flex-direction: column;
+        }
+        .swagger-ui .opblock-summary {
+          margin-bottom: 15px;
+        }
       }
     `,
     customCssUrl: CSS_URL,
@@ -87,3 +121,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+                                
