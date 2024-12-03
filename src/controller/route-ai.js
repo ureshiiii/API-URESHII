@@ -41,7 +41,7 @@ export const process = async (req, res) => {
       }
 
       try {
-        const audioBuffer = await aiFunctions.googletts(text.trim(), req.query.lang); 
+        const audioBuffer = await aiFunctions.googletts(text); 
         res.set('Content-Type', 'audio/wav'); 
         res.send(audioBuffer);
       } catch (error) {
