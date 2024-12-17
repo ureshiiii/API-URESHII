@@ -1,5 +1,6 @@
 import { queryDatabase } from '../db-mysql.js';
 
+/** DATA PRIBADI **/
 export const getData = async (req, res) => {
   try {
     const type = req.query.type || null;
@@ -60,3 +61,40 @@ export const getData = async (req, res) => {
     res.status(500).json({ Error: "Terjadi kesalahan server", Detail: err.message });
   }
 };
+/** END DATA PRIBADI **/
+
+/** CRUD DATA USER **/
+export const createUser = async (username, email, hashedPassword) => {
+    const query = 'INSERT INTO Users (username, email, password) VALUES (?, ?, ?)';
+    const values = [username, email, hashedPassword];
+    const [result] = await queryDatabase(query, values);
+    return result.insertId;
+};
+export const getUserByEmail = async (email) => {
+    const query = 'SELECT * FROM Users WHERE email = ?';
+    const [rows] = await queryDatabase(query, [email]);
+    return rows[0];
+};
+export const createProduct = async (userId, name, description, price, imageUrl) => {
+    const query = 'INSERT INTO Products (user_id, name, description, price, image_url) VALUES (?, ?, ?, ?, ?)';
+    const values = [userId, name, description, price, imageUrl];
+    const [result] = await queryDatabase(query, values);
+    return result.insertId;
+};
+export const getProductsByUserId = async (userId) => {
+    const query = 'SELECT * FROM Products WHERE user_id = ?';
+    const [rows] = await queryDatabase(query, [userId]);
+    return rows;
+};
+export const updateProduct = async (productId, name, description, price, imageUrl) => {
+    const query = 'UPDATE Products SET name = ?, description = ?, price = ?, image_url = ? WHERE id = ?';
+    const values = [name, description, price, imageUrl, productId];
+    const [result] = await queryDatabase(query, values);
+    return result.affectedRows;
+};
+export const deleteProduct = async (productId) => {
+    const query = 'DELETE FROM Products WHERE id = ?';
+    const [result] = await queryDatabase(query, [productId]);
+    return result.affectedRows;
+};
+/** END CRUD DATA USER**/
